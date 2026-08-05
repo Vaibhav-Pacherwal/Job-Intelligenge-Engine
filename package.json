@@ -1,0 +1,34 @@
+{
+  "name": "job-intelligence-engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vaibhav-Pacherwal/Job-Intelligenge-Engine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vaibhav-Pacherwal/Job-Intelligenge-Engine/issues"
+  },
+  "homepage": "https://github.com/Vaibhav-Pacherwal/Job-Intelligenge-Engine#readme",
+  "dependencies": {
+    "axios": "^1.19.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "groq-sdk": "^1.5.0",
+    "mongoose": "^9.9.1",
+    "nodemon": "^3.1.14"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.1.2"
+  }
+}
