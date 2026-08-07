@@ -1,4 +1,6 @@
 import Groq from "groq-sdk";
+import Job from "../models/job.model.js";
+import connectDB from "../config/db.js";
 import dotenv from 'dotenv';
 dotenv.config({ path: "../.env" });
 
@@ -24,7 +26,7 @@ export async function getGroqResponse(prompt, index) {
     model: "openai/gpt-oss-20b",
   });
 
-  console.log(response.choices[0]?.message?.content || "");
+  return response.choices[0]?.message?.content;
 }
 
 export default getGroqResponse;

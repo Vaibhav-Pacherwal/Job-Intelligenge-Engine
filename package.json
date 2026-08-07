@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Vaibhav-Pacherwal/Job-Intelligenge-Engine#readme",
   "dependencies": {
+    "@google/genai": "^2.16.0",
     "axios": "^1.19.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",

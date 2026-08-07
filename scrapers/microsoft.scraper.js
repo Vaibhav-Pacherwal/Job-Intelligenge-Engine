@@ -59,7 +59,8 @@ const microsoftScraper = async () => {
                 console.log(`Scraped positions from Microsoft starting at index ${start}`);
             }).catch((error) => {
                 console.error("Error occurred while saving job:", error);
-            })
+            });
+
             start += 10;
         }
     } catch (error) {
@@ -72,4 +73,4 @@ const microsoftScraper = async () => {
     }
 }
 
-microsoftScraper();
+export default microsoftScraper;
