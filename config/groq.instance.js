@@ -11,7 +11,9 @@ const groqClients = [
     new Groq({ apiKey: process.env.GROQ_API_KEY_4 }),
     new Groq({ apiKey: process.env.GROQ_API_KEY_5 }),
     new Groq({ apiKey: process.env.GROQ_API_KEY_6 }),
-    new Groq({ apiKey: process.env.GROQ_API_KEY_7 })
+    new Groq({ apiKey: process.env.GROQ_API_KEY_7 }),
+    new Groq({ apiKey: process.env.GROQ_API_KEY_8 }),
+    new Groq({ apiKey: process.env.GROQ_API_KEY_9 }),
 ];
 
 export async function getGroqResponse(prompt, index) {

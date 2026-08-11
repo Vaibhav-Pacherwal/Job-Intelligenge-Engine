@@ -6,20 +6,15 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
 const clients = [
-    { provider: "groq", instance: getGroqResponse },
-    { provider: "gemini", instance: getGeminiResponse },
-    { provider: "groq", instance: getGroqResponse },
-    { provider: "gemini", instance: getGeminiResponse },
-    { provider: "groq", instance: getGroqResponse },
-    { provider: "gemini", instance: getGeminiResponse },
-    { provider: "groq", instance: getGroqResponse },
-    { provider: "gemini", instance: getGeminiResponse },
-    { provider: "groq", instance: getGroqResponse },
-    { provider: "gemini", instance: getGeminiResponse },
-    { provider: "groq", instance: getGroqResponse },
-    { provider: "gemini", instance: getGeminiResponse },
-    { provider: "groq", instance: getGroqResponse },
-    { provider: "gemini", instance: getGeminiResponse },
+    { provider: "groq_1", instance: getGroqResponse },
+    { provider: "groq_2", instance: getGroqResponse },
+    { provider: "groq_3", instance: getGroqResponse },
+    { provider: "groq_4", instance: getGroqResponse },
+    { provider: "groq_5", instance: getGroqResponse },
+    { provider: "groq_6", instance: getGroqResponse },
+    { provider: "groq_7", instance: getGroqResponse },
+    { provider: "groq_8", instance: getGroqResponse },
+    { provider: "groq_9", instance: getGroqResponse },
 ];
 
 const summarizeDescription = async () => {
@@ -28,7 +23,7 @@ const summarizeDescription = async () => {
 
     let count = 0;
     while (true) {
-      const jobs = await Job.find({ "status.summarized": false }).limit(14);
+      const jobs = await Job.find({ "status.summarized": false }).limit(9);
       if(jobs.length === 0) {
         console.log("No more jobs to summarize. Exiting loop.");
         break;
@@ -80,7 +75,7 @@ const summarizeDescription = async () => {
           await job.save();
 
         } catch(error) {
-          console.log(`Error occurred while summarizing job with ID ${job._id}`);
+          console.log(`Error occurred while summarizing job with ID ${job._id}`, error);
         }
       }));
       console.log(`Batch ${++count} of jobs summarized successfully.`);
