@@ -75,6 +75,11 @@ const jobSchema = new mongoose.Schema({
             type: Boolean,
             default: false
         }
+    },
+
+    aiEligible: {
+        type: Boolean,
+        default: false
     }
 
 }, {

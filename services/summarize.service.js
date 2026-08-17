@@ -1,7 +1,6 @@
 import connectDB from "../config/db.js";
 import Job from "../models/job.model.js";
 import getGroqResponse from "../config/groq.instance.js";
-import getGeminiResponse from "../config/gemini.instance.js";
 import dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
@@ -23,7 +22,7 @@ const summarizeDescription = async () => {
 
     let count = 0;
     while (true) {
-      const jobs = await Job.find({ "status.summarized": false }).limit(9);
+      const jobs = await Job.find({ aiEligible: false, "status.summarized": false }).limit(9);
       if(jobs.length === 0) {
         console.log("No more jobs to summarize. Exiting loop.");
         break;
@@ -72,6 +71,7 @@ const summarizeDescription = async () => {
 
           job.ai = summary;
           job.status.summarized = true;
+          job.aiEligible = true;
           await job.save();
 
         } catch(error) {
