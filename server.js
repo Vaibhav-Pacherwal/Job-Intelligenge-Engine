@@ -3,6 +3,7 @@ import connectDB from './config/db.js';
 import Job from './models/job.model.js';
 import dotenv from 'dotenv';
 import sendWhatsAppMessage from './services/whatsapp.service.js';
+import filterJobs from './services/filter.service.js';
 dotenv.config();
 
 const app = express();
@@ -36,22 +37,64 @@ app.get("/webhook/whatsapp", (req, res) => {
     return res.sendStatus(403);
 });
 
-app.post("/webhook/whatsapp", (req, res) => {
+const users = {};
+app.post("/webhook/whatsapp", async (req, res) => {
     console.log("WhatsApp webhook received!");
-    const message = req.body.entry[0].changes[0].value.messages[0];
+    const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
 
     if(!message) {
         return res.sendStatus(200);
     }
 
     let from = message.from;
-    let text = message.text.body;
-    text = text.toLowerCase();
+    let text = message.text.body.toLowerCase().trim();
     console.log(`From: +${from}`);
     console.log(`Text: ${text}`);
 
-    switch (text) {
-        case "hi": sendWhatsAppMessage(from, "Are you looking for a job or internship?");
+    if(!users[from]) {
+        users[from] = {
+            state: "idle",
+            parameters: {
+                role: null,
+                type: null,
+                location: null
+            }
+        }
+    }
+
+    const user = users[from];
+
+    if(text === "hi" || text === "hello") {
+        user.state = "awaiting_type";
+        await sendWhatsAppMessage(from, "Are you looking for a job or internship?");
+        return res.sendStatus(200);
+    }
+
+    if(user.state === "awaiting_type") {
+        if(text === "internship" || text === "job") {
+            user.parameters.type = text;
+            user.state = "awaiting_role";
+            await sendWhatsAppMessage(from, "What role are you looking for?");
+            return res.sendStatus(200);
+        }
+    }
+
+    if(user.state === "awaiting_role") {
+        user.parameters.role = text;
+        user.state = "awaiting_location";
+        await sendWhatsAppMessage(from, "Which location?");;
+        return res.sendStatus(200);
+    }
+
+    if(user.state === "awaiting_location") {
+        user.parameters.location = text;
+        await sendWhatsAppMessage(from, `Searching for ${user.parameters.type}s for ${user.parameters.role} in ${user.parameters.location}...`);
+        setTimeout(async () => {
+            const relevantJobs = await filterJobs(user.parameters);
+            await sendWhatsAppMessage(from, JSON.stringify(relevantJobs));
+        });
+        user.state = "idle";
+        return res.sendStatus(200);
     }
 
     res.sendStatus(200);
